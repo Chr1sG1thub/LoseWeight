@@ -61,10 +61,10 @@
       const distance4 = parseFloat(entryForm.distance4.value);
       const time4 = parseFloat(entryForm.time4.value);
       const mass4 = parseFloat(entryForm.mass4.value);
-      document.getElementById('mass4').textContent = mass4;
         
 
       const power4 = (mass4*g*gradient4/100*(distance4*1000/time4)+crr*mass4*g*Math.cos(gradient4/100)*(distance4*1000/time4)+0.5*rho*cda*(distance4*1000/time4)**2).toFixed(0);
+      document.getElementById('power4').textContent = power4;
 
      
       const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
