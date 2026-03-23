@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Climbing</title>
+  <title>LoseWeight</title>
   <style>
     * {
       font-family: Arial, sans-serif;
@@ -63,12 +63,12 @@
       const mass4 = parseFloat(entryForm.mass4.value);
         
 
-      const power4 = (mass4*g*gradient4/100*(distance4*1000/time4)+crr*mass4*g*Math.cos(gradient4/100)*(distance4*1000/time4)+0.5*rho*cda*(distance4*1000/time4)**2).toFixed(0);
+      const xpower4 = (mass4*g*gradient4/100*(distance4*1000/time4)+crr*mass4*g*Math.cos(gradient4/100)*(distance4*1000/time4)+0.5*rho*cda*(distance4*1000/time4)**2).toFixed(0);
 
       }
       
-      const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
-      const time5Plus1 = (distance4*3600/((-((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt(((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
+      const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-xpower4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
+      const time5Plus1 = (distance4*3600/((-((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt(((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-xpower4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
       document.getElementById('time5').textContent = time5Plus1-time5;
        
    }; //entryForm.onsubmit
