@@ -1,102 +1,115 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>LoseWeight</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Col Selector</title>
   <style>
-    * {
-      font-family: Arial, sans-serif;
-    }
-    input {
-      width: 120px;
-      text-align: right;
-    }
-
-    .result {
-      background-color: chartreuse;
-      text-size: 12px;
-      text-align: right;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 500px; margin: 2rem auto; padding: 1rem; }
+    select, input { padding: 0.75rem; margin: 0.5rem 0; font-size: 1rem; border: 1px solid #ddd; border-radius: 6px; width: 100%; box-sizing: border-box; }
+    label { font-weight: 600; color: #333; display: block; margin-top: 1rem; }
+    .fields { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #007bff; }
   </style>
 </head>
-
 <body>
+  <h1>Col de Pyrénées Selector</h1>
+  
+  <label for="colSelect">Select Col:</label>
+  <select id="colSelect">
+    <option value="">Choose a climb...</option>
+  </select>
 
-    <form id="entry-form">
-
-      <table>
-        <tr><strong><td>Gradient (%)</td><td>Distance (km)</td><td>Mass (kg)</td><td>Time</td></strong></tr>
-        <tr><td style="background-color: yellow"><input type="number" step="0.1" id="gradient4"></td><td style="background-color: yellow"><input type="number" step="0.01" id="distance4"></td><td style="background-color: yellow"><input type="number" id="mass4"></td><td style="background-color: yellow"><input id="time4"></td></tr>
-      </table>
-      <div id=delta>&nbsp;</div>
-
-     <br/>
-      <button type="submit">Submit</button>
-
-    </form>
-
+  <div class="fields">
+    <label for="gradient4">Gradient (%):</label>
+    <input type="number" id="gradient4" step="0.1" readonly>
+    
+    <label for="distance4">Distance (km):</label>
+    <input type="number" id="distance4" step="0.1" readonly>
+  </div>
 
   <script>
-const cols = [
-  { nom: "Col de Mantet", cote: "Sahorre", longueur_km: 14.6, pente_moy_pct: 7.4 },
-  { nom: "Col de la Llose (par Ayguatebia)", cote: "Olette", longueur_km: 24.5, pente_moy_pct: 5.1 },
-  { nom: "Col de la Llose (par Railleu)", cote: "Olette", longueur_km: 26.0, pente_moy_pct: 4.8 },
-  { nom: "Coll de la Descarga", cote: "Arles-sur-Tech", longueur_km: 19.0, pente_moy_pct: 5.9 },
-  { nom: "Puigmal (Station de Ski)", cote: "Err", longueur_km: 11.8, pente_moy_pct: 7.1 },
-  { nom: "Col de Creu", cote: "Olette", longueur_km: 22.7, pente_moy_pct: 4.8 },
-  { nom: "Col de Jau", cote: "Ste Colombe sur Guette", longueur_km: 13.4, pente_moy_pct: 6.7 },
-  { nom: "Puigmal (Station de Ski)", cote: "Ste-Léocadie", longueur_km: 17.5, pente_moy_pct: 5.3 },
-  { nom: "Col d'Ares", cote: "Le Tech", longueur_km: 19.0, pente_moy_pct: 5.1 },
-  { nom: "Col de Jau", cote: "Mosset", longueur_km: 13.6, pente_moy_pct: 5.9 },
-  { nom: "Col de la Brousse", cote: "Ceret", longueur_km: 9.9, pente_moy_pct: 6.9 },
-  { nom: "Col de l'Ouillat (par St-Jean d'Albère)", cote: "Le Perthus", longueur_km: 13.8, pente_moy_pct: 5.1 },
-  { nom: "Col de Puymorens", cote: "Latour-de-Carol", longueur_km: 18.8, pente_moy_pct: 3.6 },
-  { nom: "Coll de Jou", cote: "Vernet-les-Bains", longueur_km: 5.6, pente_moy_pct: 8.0 },
-  { nom: "Col de Roque Jalère", cote: "Catllar", longueur_km: 11.7, pente_moy_pct: 5.5 },
-  { nom: "Col Palomère", cote: "Finestret", longueur_km: 20.6, pente_moy_pct: 3.6 },
-  { nom: "Glorianes", cote: "Rigarda", longueur_km: 7.7, pente_moy_pct: 6.3 },
-  { nom: "Col de Roque Jalère", cote: "Sournia", longueur_km: 8.1, pente_moy_pct: 6.0 },
-  { nom: "Nohèdes", cote: "Ria", longueur_km: 13.6, pente_moy_pct: 4.3 },
-  { nom: "Col Sainte Marguerite (vers Casefabre)", cote: "St-Michel-de-Llotes", longueur_km: 6.4, pente_moy_pct: 6.6 },
-  { nom: "Col d'Aussières", cote: "Lapradelle", longueur_km: 15.6, pente_moy_pct: 3.8 },
-  { nom: "Tour Madeloc (balcon)", cote: "Banyuls-sur-Mer", longueur_km: 7.4, pente_moy_pct: 5.9 },
-  { nom: "Arboussols", cote: "Marquixanes", longueur_km: 3.9, pente_moy_pct: 7.8 },
-  { nom: "Col de las Couloumines (par Trilla)", cote: "Ansignan", longueur_km: 9.4, pente_moy_pct: 4.9 },
-  { nom: "Col de Souillals (par Rabouillet)", cote: "Sournia", longueur_km: 12.7, pente_moy_pct: 4.0 },
-  { nom: "Jujols", cote: "Olette", longueur_km: 4.8, pente_moy_pct: 6.9 },
-  { nom: "Col del Payrou (vers Taillet)", cote: "Pont de Reynès", longueur_km: 8.1, pente_moy_pct: 5.3 },
-  { nom: "Col Xatard", cote: "Amélie-les-Bains", longueur_km: 21.2, pente_moy_pct: 2.6 },
-  { nom: "Col de Fontcouverte", cote: "St-Michel-de-Llotes", longueur_km: 8.3, pente_moy_pct: 5.0 },
-  { nom: "Col des Auzines", cote: "Ille-sur-Têt", longueur_km: 11.7, pente_moy_pct: 4.0 },
-  { nom: "Col de Fontcouverte", cote: "Thuir", longueur_km: 10.6, pente_moy_pct: 4.2 },
-  { nom: "Les Chartreuses du Boulou", cote: "L'Ouest", longueur_km: 3.4, pente_moy_pct: 7.5 },
-  { nom: "Col Sainte Marguerite (par Casefabre)", cote: "D618", longueur_km: 4.6, pente_moy_pct: 6.5 },
-  { nom: "Força Réal", cote: "Millas", longueur_km: 9.0, pente_moy_pct: 4.5 },
-  { nom: "Col Fourtou", cote: "Bouleternère", longueur_km: 17.3, pente_moy_pct: 2.7 },
-  { nom: "Col de Fins", cote: "Joncet", longueur_km: 7.1, pente_moy_pct: 5.0 },
-  { nom: "Col Palomère", cote: "La Bastide", longueur_km: 6.8, pente_moy_pct: 5.0 },
-  { nom: "Prieuré de Serrabone", cote: "D618", longueur_km: 4.1, pente_moy_pct: 6.5 },
-  { nom: "Tour Madeloc (balcon)", cote: "Le Racou", longueur_km: 11.0, pente_moy_pct: 3.8 },
-  { nom: "Col des Millères", cote: "Codalet", longueur_km: 8.7, pente_moy_pct: 4.3 },
-  { nom: "Grau de Maury", cote: "Maury", longueur_km: 4.2, pente_moy_pct: 5.9 },
-  { nom: "Col de Fins", cote: "Sahorre", longueur_km: 3.5, pente_moy_pct: 6.4 },
-  { nom: "Col des Auzines", cote: "Vinça", longueur_km: 9.8, pente_moy_pct: 3.6 },
-  { nom: "Col de Banyuls", cote: "Banyuls-sur-Mer", longueur_km: 10.2, pente_moy_pct: 3.5 },
-  { nom: "Col de Lacroux", cote: "St-Arnac", longueur_km: 2.4, pente_moy_pct: 6.9 },
-  { nom: "Col de Pourteil (vers Lesquerde)", cote: "Maury", longueur_km: 3.5, pente_moy_pct: 5.6 },
-  { nom: "Col de Peyreclause (par Bélesta)", cote: "Ille-sur-Têt", longueur_km: 7.5, pente_moy_pct: 3.6 },
-  { nom: "Grau de Maury", cote: "Cucugnan", longueur_km: 1.9, pente_moy_pct: 6.6 },
-  { nom: "Col de Peyreclause (vers Bélesta)", cote: "Caramany", longueur_km: 5.5, pente_moy_pct: 4.1 },
-  { nom: "Col de Llauro", cote: "Fourques", longueur_km: 7.4, pente_moy_pct: 3.4 },
-  { nom: "Col de Llauro", cote: "Ceret", longueur_km: 7.4, pente_moy_pct: 3.2 },
-  { nom: "Col Fourtou", cote: "Calmeilles", longueur_km: 4.1, pente_moy_pct: 4.1 },
-  { nom: "Col de la Bataille", cote: "Millas", longueur_km: 4.9, pente_moy_pct: 3.4 },
-  { nom: "Col de la Bataille", cote: "Estagel", longueur_km: 7.1, pente_moy_pct: 2.5 },
-  { nom: "Col de la Dona", cote: "Estagel", longueur_km: 4.4, pente_moy_pct: 2.6 },
-  { nom: "Col de la Dona", cote: "Pézilla-la-Rivière", longueur_km: 5.4, pente_moy_pct: 2.1 }
-];
+    const cols = [
+      { nom: "Arboussols, côté Marquixanes", longueur_km: 3.9, pente_moy_pct: 7.8 },
+      { nom: "Col de Banyuls, côté Banyuls-sur-Mer", longueur_km: 10.2, pente_moy_pct: 3.5 },
+      { nom: "Col de la Bataille, côté Estagel", longueur_km: 7.1, pente_moy_pct: 2.5 },
+      { nom: "Col de la Bataille, côté Millas", longueur_km: 4.9, pente_moy_pct: 3.4 },
+      { nom: "Col de la Brousse, côté Ceret", longueur_km: 9.9, pente_moy_pct: 6.9 },
+      { nom: "Col de la Dona, côté Estagel", longueur_km: 4.4, pente_moy_pct: 2.6 },
+      { nom: "Col de la Dona, côté Pézilla-la-Rivière", longueur_km: 5.4, pente_moy_pct: 2.1 },
+      { nom: "Col de la Llose (par Ayguatebia), côté Olette", longueur_km: 24.5, pente_moy_pct: 5.1 },
+      { nom: "Col de la Llose (par Railleu), côté Olette", longueur_km: 26.0, pente_moy_pct: 4.8 },
+      { nom: "Col de Lacroux, côté St-Arnac", longueur_km: 2.4, pente_moy_pct: 6.9 },
+      { nom: "Col de las Couloumines (par Trilla), côté Ansignan", longueur_km: 9.4, pente_moy_pct: 4.9 },
+      { nom: "Col de Llauro, côté Ceret", longueur_km: 7.4, pente_moy_pct: 3.2 },
+      { nom: "Col de Llauro, côté Fourques", longueur_km: 7.4, pente_moy_pct: 3.4 },
+      { nom: "Col de l'Ouillat (par St-Jean d'Albère), côté Le Perthus", longueur_km: 13.8, pente_moy_pct: 5.1 },
+      { nom: "Col de Mantet, côté Sahorre", longueur_km: 14.6, pente_moy_pct: 7.4 },
+      { nom: "Col de Palomère, côté Finestret", longueur_km: 20.6, pente_moy_pct: 3.6 },
+      { nom: "Col de Palomère, côté La Bastide", longueur_km: 6.8, pente_moy_pct: 5.0 },
+      { nom: "Col de Pourteil (vers Lesquerde), côté Maury", longueur_km: 3.5, pente_moy_pct: 5.6 },
+      { nom: "Col de Roque Jalère, côté Catllar", longueur_km: 11.7, pente_moy_pct: 5.5 },
+      { nom: "Col de Roque Jalère, côté Sournia", longueur_km: 8.1, pente_moy_pct: 6.0 },
+      { nom: "Col de Souillals (par Rabouillet), côté Sournia", longueur_km: 12.7, pente_moy_pct: 4.0 },
+      { nom: "Col del Payrou (vers Taillet), côté Pont de Reynès", longueur_km: 8.1, pente_moy_pct: 5.3 },
+      { nom: "Col des Auzines, côté Ille-sur-Têt", longueur_km: 11.7, pente_moy_pct: 4.0 },
+      { nom: "Col des Auzines, côté Vinça", longueur_km: 9.8, pente_moy_pct: 3.6 },
+      { nom: "Col des Millères, côté Codalet", longueur_km: 8.7, pente_moy_pct: 4.3 },
+      { nom: "Col d'Ares, côté Le Tech", longueur_km: 19.0, pente_moy_pct: 5.1 },
+      { nom: "Col d'Aussières, côté Lapradelle", longueur_km: 15.6, pente_moy_pct: 3.8 },
+      { nom: "Col de Creu, côté Olette", longueur_km: 22.7, pente_moy_pct: 4.8 },
+      { nom: "Col de Fins, côté Joncet", longueur_km: 7.1, pente_moy_pct: 5.0 },
+      { nom: "Col de Fins, côté Sahorre", longueur_km: 3.5, pente_moy_pct: 6.4 },
+      { nom: "Col de Fontcouverte, côté St-Michel-de-Llotes", longueur_km: 8.3, pente_moy_pct: 5.0 },
+      { nom: "Col de Fontcouverte, côté Thuir", longueur_km: 10.6, pente_moy_pct: 4.2 },
+      { nom: "Col de Fourtou, côté Bouleternère", longueur_km: 17.3, pente_moy_pct: 2.7 },
+      { nom: "Col de Fourtou, côté Calmeilles", longueur_km: 4.1, pente_moy_pct: 4.1 },
+      { nom: "Col de Jau, côté Mosset", longueur_km: 13.6, pente_moy_pct: 5.9 },
+      { nom: "Col de Jau, côté Ste Colombe sur Guette", longueur_km: 13.4, pente_moy_pct: 6.7 },
+      { nom: "Col de Peyreclause (par Bélesta), côté Ille-sur-Têt", longueur_km: 7.5, pente_moy_pct: 3.6 },
+      { nom: "Col de Peyreclause (vers Bélesta), côté Caramany", longueur_km: 5.5, pente_moy_pct: 4.1 },
+      { nom: "Col de Puymorens, côté Latour-de-Carol", longueur_km: 18.8, pente_moy_pct: 3.6 },
+      { nom: "Col de Sainte Marguerite (par Casefabre), côté D618", longueur_km: 4.6, pente_moy_pct: 6.5 },
+      { nom: "Col de Sainte Marguerite (vers Casefabre), côté St-Michel-de-Llotes", longueur_km: 6.4, pente_moy_pct: 6.6 },
+      { nom: "Col de Xatard, côté Amélie-les-Bains", longueur_km: 21.2, pente_moy_pct: 2.6 },
+      { nom: "Coll de Jou, côté Vernet-les-Bains", longueur_km: 5.6, pente_moy_pct: 8.0 },
+      { nom: "Coll de la Descarga, côté Arles-sur-Tech", longueur_km: 19.0, pente_moy_pct: 5.9 },
+      { nom: "Força Réal, côté Millas", longueur_km: 9.0, pente_moy_pct: 4.5 },
+      { nom: "Glorianes, côté Rigarda", longueur_km: 7.7, pente_moy_pct: 6.3 },
+      { nom: "Grau de Maury, côté Cucugnan", longueur_km: 1.9, pente_moy_pct: 6.6 },
+      { nom: "Grau de Maury, côté Maury", longueur_km: 4.2, pente_moy_pct: 5.9 },
+      { nom: "Jujols, côté Olette", longueur_km: 4.8, pente_moy_pct: 6.9 },
+      { nom: "Les Chartreuses du Boulou, côté L'Ouest", longueur_km: 3.4, pente_moy_pct: 7.5 },
+      { nom: "Nohèdes, côté Ria", longueur_km: 13.6, pente_moy_pct: 4.3 },
+      { nom: "Prieuré de Serrabone, côté D618", longueur_km: 4.1, pente_moy_pct: 6.5 },
+      { nom: "Puigmal (Station de Ski), côté Err", longueur_km: 11.8, pente_moy_pct: 7.1 },
+      { nom: "Puigmal (Station de Ski), côté Ste-Léocadie", longueur_km: 17.5, pente_moy_pct: 5.3 },
+      { nom: "Tour Madeloc (balcon), côté Banyuls-sur-Mer", longueur_km: 7.4, pente_moy_pct: 5.9 },
+      { nom: "Tour Madeloc (balcon), côté Le Racou", longueur_km: 11.0, pente_moy_pct: 3.8 }
+    ];
 
+    // Populate dropdown
+    const select = document.getElementById('colSelect');
+    cols.forEach(col => {
+      const option = document.createElement('option');
+      option.value = col.nom;
+      option.textContent = col.nom;
+      select.appendChild(option);
+    });
+
+    // Handle selection
+    select.addEventListener('change', (e) => {
+      const selectedNom = e.target.value;
+      const col = cols.find(c => c.nom === selectedNom);
+      
+      if (col) {
+        document.getElementById('gradient4').value = col.pente_moy_pct;
+        document.getElementById('distance4').value = col.longueur_km;
+      } else {
+        document.getElementById('gradient4').value = '';
+        document.getElementById('distance4').value = '';
+      }
+    });
+    
 function parseDurationToSeconds(str) {
   if (typeof str !== "string") return NaN;
   str = str.trim();
