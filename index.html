@@ -86,7 +86,7 @@ function parseDurationToSeconds(str) {
       const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
       const time5Plus1 = (distance4*3600/((-((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt(((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
         console.log(power4);
-      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add " + (time5Plus1-time5) + " seconds to the time required.";
+      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add <strong>" + (time5Plus1-time5) + "</strong> seconds to the time required.";
        
       }
     }; //entryForm.onsubmit
