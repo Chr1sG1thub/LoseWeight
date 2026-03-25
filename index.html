@@ -12,6 +12,20 @@
     .input-group { display: flex; gap: 0.5rem; align-items: end; }
     .time-input { flex: 1; }
     .duration-input { flex: 2; }
+    button { 
+      background: #007bff; 
+      color: white; 
+      border: none; 
+      padding: 1rem 2rem; 
+      font-size: 1.1rem; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      width: 100%; 
+      margin-top: 1.5rem;
+      font-weight: 600;
+    }
+    button:hover { background: #0056b3; }
+    button:disabled { background: #6c757d; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -36,6 +50,9 @@
     </div>
   </div>
 
+  <button id="submitBtn" disabled>Submit Data</button>
+
+  <!-- ADD YOUR CUSTOM CODE HERE -->
   <script>
     const cols = [
       { nom: "Arboussols, côté Marquixanes", longueur_km: 3.9, pente_moy_pct: 7.8 },
@@ -96,7 +113,8 @@
       { nom: "Tour Madeloc (balcon), côté Le Racou", longueur_km: 11.0, pente_moy_pct: 3.8 }
     ];
 
-    // Populate dropdown
+
+    // Populate dropdown (same as before)
     const select = document.getElementById('colSelect');
     cols.forEach(col => {
       const option = document.createElement('option');
@@ -105,9 +123,31 @@
       select.appendChild(option);
     });
 
-    // Col selection handler
+    // Col selection handler (same as before)
     select.addEventListener('change', (e) => {
-      const selectedNom = e.target.value;
+      updateFields();
+    });
+
+    // Time parser (same as before)
+    function parseTimeToSeconds(timeStr) {
+      if (!timeStr) return 0;
+      let seconds = 0;
+      const minutesMatch = timeStr.match(/(\d+)m/);
+      const secondsMatch = timeStr.match(/(\d+)s/);
+      if (minutesMatch) seconds += parseInt(minutesMatch[1]) * 60;
+      if (secondsMatch) seconds += parseInt(secondsMatch[1]);
+      return seconds;
+    }
+
+    document.getElementById('timeInput').addEventListener('input', (e) => {
+      const seconds = parseTimeToSeconds(e.target.value.trim());
+      document.getElementById('duration4').value = seconds || '';
+      updateSubmitButton();
+    });
+
+    // Update populated fields
+    function updateFields() {
+      const selectedNom = document.getElementById('colSelect').value;
       const col = cols.find(c => c.nom === selectedNom);
       
       if (col) {
@@ -117,29 +157,39 @@
         document.getElementById('gradient4').value = '';
         document.getElementById('distance4').value = '';
       }
-    });
-
-    // Time parser: 10m30s → 630 seconds
-    function parseTimeToSeconds(timeStr) {
-      if (!timeStr) return 0;
-      
-      let seconds = 0;
-      const minutesMatch = timeStr.match(/(\d+)m/);
-      const secondsMatch = timeStr.match(/(\d+)s/);
-      
-      if (minutesMatch) seconds += parseInt(minutesMatch[1]) * 60;
-      if (secondsMatch) seconds += parseInt(secondsMatch[1]);
-      
-      return seconds;
+      updateSubmitButton();
     }
 
-    // Time input handler
-    document.getElementById('timeInput').addEventListener('input', (e) => {
-      const timeStr = e.target.value.trim();
-      const seconds = parseTimeToSeconds(timeStr);
-      document.getElementById('duration4').value = seconds || '';
-    });
+    // Enable/disable submit button
+    function updateSubmitButton() {
+      const gradient = document.getElementById('gradient4').value;
+      const distance = document.getElementById('distance4').value;
+      const duration = document.getElementById('duration4').value;
+      const btn = document.getElementById('submitBtn');
+      
+      btn.disabled = !(gradient && distance && duration);
+    }
 
+    // Submit handler - YOUR CUSTOM CODE GOES HERE
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const data = {
+        col: document.getElementById('colSelect').value,
+        gradient4: parseFloat(document.getElementById('gradient4').value),
+        distance4: parseFloat(document.getElementById('distance4').value),
+        duration4: parseInt(document.getElementById('duration4').value)
+      };
+      
+      // ====== ADD YOUR CUSTOM CODE HERE ======
+      console.log('Submit data:', data);
+      // Example: sendToAPI(data); or updateChart(data); or saveToIntervalsICU(data);
+      // ======================================
+      
+      alert(`Submitted: ${data.col}\nGradient: ${data.gradient4}%\nDistance: ${data.distance4}km\nDuration: ${data.duration4}s`);
+    });
+  </script>
+</body>
+</html>
+ 
     const g = 9.81; // m/s^2
     const crr = 0.005;
     const rho = 1.226; // kg/m^3
@@ -159,7 +209,7 @@
           
       const gradient4 = parseFloat(entryForm.gradient4.value);
       const distance4 = parseFloat(entryForm.distance4.value);
-      const time4 = parseDurationToSeconds(entryForm.time4.value);
+      const time4 = parseDurationToSeconds(entryForm.duration4.value);
       const mass4 = parseFloat(entryForm.mass4.value);
         
 
@@ -167,8 +217,8 @@
      
       const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
       const time5Plus1 = (distance4*3600/((-((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt(((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
-        console.log(power4);
-      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add <strong>" + (time5Plus1-time5) + "</strong> seconds to the time required.";
+        console.log(power4, time5, time5Plus1;
+//      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add <strong>" + (time5Plus1-time5) + "</strong> seconds to the time required.";
        
       }
     }; //entryForm.onsubmit
