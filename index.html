@@ -204,10 +204,10 @@
           entryForm.time4.value.trim().length != 0 &&
           entryForm.mass4.value.trim().length != 0) { */
           
-      const gradient4 = parseFloat(entryForm.gradient4.value);
-      const distance4 = parseFloat(entryForm.distance4.value);
-      const time4 = parseDurationToSeconds(entryForm.duration4.value);
-      const mass4 = parseFloat(entryForm.mass4.value);
+      const gradient4 = data.gradient4;
+      const distance4 = data.distance4;
+      const time4 = data.duration4;
+      const mass4 = 82;
         
 
       const power4 = (mass4*g*gradient4/100*(distance4*1000/time4)+crr*mass4*g*Math.cos(gradient4/100)*(distance4*1000/time4)+0.5*rho*cda*(distance4*1000/time4)**2).toFixed(0);
