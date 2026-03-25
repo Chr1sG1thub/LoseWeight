@@ -52,8 +52,8 @@
 
   <button id="submitBtn" disabled>Submit Data</button>
 
-  <!-- ADD YOUR CUSTOM CODE HERE -->
-  <script>
+  <div id="delta">&nbsp;</div>
+    <script>
     const cols = [
       { nom: "Arboussols, côté Marquixanes", longueur_km: 3.9, pente_moy_pct: 7.8 },
       { nom: "Col de Banyuls, côté Banyuls-sur-Mer", longueur_km: 10.2, pente_moy_pct: 3.5 },
@@ -180,11 +180,11 @@
       };
       
       // ====== ADD YOUR CUSTOM CODE HERE ======
-      console.log('Submit data:', data);
+//      console.log('Submit data:', data);
       // Example: sendToAPI(data); or updateChart(data); or saveToIntervalsICU(data);
       // ======================================
       
-      alert(`Submitted: ${data.col}\nGradient: ${data.gradient4}%\nDistance: ${data.distance4}km\nDuration: ${data.duration4}s`);
+//      alert(`Submitted: ${data.col}\nGradient: ${data.gradient4}%\nDistance: ${data.distance4}km\nDuration: ${data.duration4}s`);
  
     const g = 9.81; // m/s^2
     const crr = 0.005;
@@ -213,8 +213,8 @@
      
       const time5 = (distance4*3600/((-(mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt((mass4*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
       const time5Plus1 = (distance4*3600/((-((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))+Math.sqrt(((mass4+1)*g*(gradient4/100+crr*Math.cos(gradient4/100)))**2-4*0.5*rho*cda*(-power4)))/(2*0.5*rho*cda)*3.6)).toFixed(0);
-        console.log(power4, time5, time5Plus1);
-//      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add <strong>" + (time5Plus1-time5) + "</strong> seconds to the time required.";
+//        console.log(power4, time5, time5Plus1);
+      document.getElementById('delta').innerHTML = "For this climb at this average power (" + power4 + "W) each extra kilogram will add <strong>" + (time5Plus1-time5) + "</strong> seconds to the time required.";
       });
      
 /*      }
