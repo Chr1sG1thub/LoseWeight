@@ -38,6 +38,25 @@
 
 
   <script>
+
+    function parseDurationToSeconds(str) {
+  if (typeof str !== "string") return NaN;
+  str = str.trim();
+
+  // If it's a plain number like "750", treat as seconds
+  if (/^\d+(\.\d+)?$/.test(str)) {
+    return Number(str);
+  }
+
+  // Match optional minutes and seconds like "12m", "12m30s", "750s"
+  const match = str.match(/^(?:(\d+(?:\.\d+)?)m)?(?:(\d+(?:\.\d+)?)s)?$/i);
+  if (!match) return NaN;
+
+  const minutes = match[1] ? parseFloat(match[1]) : 0;
+  const seconds = match[2] ? parseFloat(match[2]) : 0;
+
+  return minutes * 60 + seconds;
+}
     
     const g = 9.81; // m/s^2
     const crr = 0.005;
@@ -58,7 +77,7 @@
           
       const gradient4 = parseFloat(entryForm.gradient4.value);
       const distance4 = parseFloat(entryForm.distance4.value);
-      const time4 = parseFloat(entryForm.time4.value);
+      const time4 = parseDurationToSeconds(entryForm.time4.value);
       const mass4 = parseFloat(entryForm.mass4.value);
         
 
