@@ -46,7 +46,7 @@
     <label>Time (e.g. 10m30s):</label>
     <div class="input-group">
       <input type="text" id="timeInput" class="time-input" placeholder="10m30s">
-<!--      <input type="number" id="duration4" class="duration-input" readonly placeholder="630s"> -->
+      <input type="number" id="duration4" class="duration-input" readonly style="display: none;" >
     </div>
   </div>
 
@@ -141,7 +141,7 @@
 
     document.getElementById('timeInput').addEventListener('input', (e) => {
       const seconds = parseTimeToSeconds(e.target.value.trim());
- //     document.getElementById('duration4').value = seconds || '';
+      document.getElementById('duration4').value = seconds || '';
       updateSubmitButton();
     });
 
